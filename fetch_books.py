@@ -87,10 +87,13 @@ def write_tsv(name, books):
         writer.writerows(books)
     print(f"{len(books)}件のデータを {output_file} に保存しました。")
 
-if __name__ == "__main__":
-    # 使用例: 2020年から2025年までのデータを取得
-    from_year = 2020
-    to_year = 2025
+def search_years_and_write_tsv(from_year, to_year):
+    books = []
     for y in range(from_year, to_year + 1):
-        books = search_year(y)
-        write_tsv(str(y), books)
+        books.extend(search_year(y))
+    write_tsv(f"{from_year}-{to_year}", books)
+    return books
+
+if __name__ == "__main__":
+    # 使用例: 2020年から2025年までのデータを取得しTSVファイルを出力
+    search_years_and_write_tsv(2020, 2025)
