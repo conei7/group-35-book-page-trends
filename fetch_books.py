@@ -1,7 +1,8 @@
+import csv
 import requests
 import xml.etree.ElementTree as ET
 
-def search_books(from_year, to_year, start_idx=1, cnt_per_page=100, max_pages=20):
+def search_books(from_year, to_year, cnt_per_page, max_pages, start_idx):
     base_url = "https://ndlsearch.ndl.go.jp/api/opensearch"
 
     books = []
@@ -63,7 +64,15 @@ def search_books(from_year, to_year, start_idx=1, cnt_per_page=100, max_pages=20
     return books
 
 # 使用例
-books = search_books(from_year=2020, to_year=2020, max_pages=20)
-for book in books:
-    print(book)
+from_year = 2020
+to_year = 2020
+books = search_books(from_year=2020, to_year=2020, cnt_per_page=400, max_pages=5, start_idx=1)
 print(f"取得した冊数: {len(books)}")
+
+# tsvに出力
+output_file = f"{from_year}-{to_year}.tsv"
+with open(output_file, "w", encoding="utf-8", newline="") as f:
+    writer = csv.DictWriter(f, fieldnames=["title", "issued", "page_count"], delimiter="\t")
+    writer.writeheader()
+    writer.writerows(books)
+print(f"データを {output_file} に保存しました。")
