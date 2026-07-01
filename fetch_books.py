@@ -17,7 +17,7 @@ def search_books(from_year, to_year, cnt_per_page, max_pages, start_idx):
             "idx": start_idx,   # ページングしても501件目以降は取得できない
         }
 
-        response = requests.get(base_url, params=params, timeout=150)
+        response = requests.get(base_url, params=params, timeout=60000)
 
         #print(response.text)
 
@@ -40,7 +40,7 @@ def search_books(from_year, to_year, cnt_per_page, max_pages, start_idx):
             page_count = None
             if extent:
                 import re
-                match = re.search(r'(\d+)', extent)
+                match = re.search(r'(\d+)p', extent)
                 if match:
                     page_count = int(match.group(1))
 
